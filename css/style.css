@@ -1,12 +1,11 @@
 :root {
-    --bg-color: #f4f7f6;
+    --bg-color: #f0f4f8;
     --card-bg: #ffffff;
-    --text-main: #2d3748;
-    --text-muted: #718096;
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
     --success: #10b981;
-    --danger: #ef4444;
     --border: #e2e8f0;
 }
 
@@ -14,7 +13,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
 body {
@@ -22,48 +21,54 @@ body {
     color: var(--text-main);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
-    padding: 20px;
+    padding: 40px 20px;
 }
 
-.tracker-container {
-    background: var(--card-bg);
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
     width: 100%;
-    max-width: 480px;
+    max-width: 900px;
 }
 
-h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: cenetr;
-    color: var(--primary);
+@media (min-width: 768px) {
+    .dashboard {
+        grid-template-columns: 350px 1fr;
+    }
 }
 
-.subtitle {
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 25px;
+.card {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+h2 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: var(--text-main);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .input-section {
     display: flex;
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 #habit-input {
     flex: 1;
-    padding: 12px 16px;
+    padding: 10px 14px;
     border: 2px solid var(--border);
     border-radius: 8px;
-    font-size: 1rem;
     outline: none;
-    transition: border-color 0.2;
+    font-size: 0.95rem;
 }
 
 #habit-input:focus {
@@ -71,74 +76,111 @@ h1 {
 }
 
 #add-btn {
-    background-color: var(--primary);
+    background: var(--primary);
     color: white;
     border: none;
-    padding: 12px 20px;
+    padding: 10px 16px;
     border-radius: 8px;
-    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2;
+    font-weight: 600;
 }
 
 #add-btn:hover {
-    background-color: var(--primary-hover);
+    background: var(--primary-hover);
 }
 
-#habit-list {
+.habit-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .habit-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 16px;
-    background: var(--bg-color);
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 2px solid transparent;
     border-radius: 8px;
-    transition: all 0.2 ease;
-}
-
-.habit-item.completed {
-    background: #ecfdf5;
-    text-decoration: line-through;
-    color: var(--text-muted);
-    opacity: 0.8;
-}
-
-.habit-text {
-    font-weight: 500;
-    cursor: pointer;
-    flex: 1;
-}
-
-.actions {
-    display: flex;
-    gap: 8px;
-}
-
-.btn-action {
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
     cursor: pointer;
 }
 
-.complete-btn {
-    background: var(--success);
-    color: white;
+.habit-item.selected {
+    border-color: var(--primary);
+    background: #e0e7ff;
 }
 
 .delete-btn {
-    background-color: transparent;
-    color: var(--danger); 
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 0.85rem;
 }
 
 .delete-btn:hover {
     text-decoration: underline;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.weekday {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding-bottom: 5px;
+}
+
+.day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.day:hover {
+    background: #e2e8f0;
+}
+
+.day.empty {
+    background: transparent;
+    cursor: default;
+}
+
+.day.completed {
+    background: var(--success);
+    color: white;
+}
+
+.day.completed:hover {
+    background: #059669;
+}
+
+.hint {
+    grid-column: span 7;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 15px;
+    text-align: center;
 }
