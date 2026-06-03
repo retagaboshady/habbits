@@ -1,0 +1,16 @@
+:root {
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --success: #10b981;
+    --danger: #ef4444;
+    --border: #e2e8f0;
+}
+
+* {
+    box-sizing: border-box;
+    
+}
