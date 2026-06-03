@@ -12,5 +12,27 @@
 
 * {
     box-sizing: border-box;
-    
+    margin: 0;
+    padding: 0;
+    font-family: 'segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.tracker-container {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 480px;
+}
+
