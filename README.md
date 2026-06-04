@@ -34,4 +34,26 @@ An website that help you organize your whole week,month even your whole year.(tr
 
 * **CSS:**
 
-!
+![Project Perview](/photos/Screenshot%20from%202026-06-04%2004-39-14.png)
+
+* **JAVA SCRIPT:**
+
+![Project Perview](/photos/Screenshot%20from%202026-06-04%2004-39-44.png)
+
+## How To Use
+
+* **Click On The Demo , when you open the website click on the input plink to write your habit:**
+
+![Project Perview](/photos/Screenshot%20from%202026-06-04%2004-08-59.png)
+
+* **Write your habit then click on the day :**
+
+![Project Perview](/photos/Screenshot%20from%202026-06-04%2004-09-17.png)
+
+* **The habit will appear under the date so u can know what do have to do in that day , and you can delete it:**
+
+![Project Perview](/photos/Screenshot%20from%202026-06-04%2004-09-23.png)
+
+* **Finally you can add as much as habits, task in the same day:**
+
+![Project Perview](/photos/Screenshot%20from%202026-06-04%2004-10-07.png)
