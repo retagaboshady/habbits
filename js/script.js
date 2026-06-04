@@ -4,8 +4,8 @@ const habitList = document.getElementById('habit-list');
 const calendarGrid = document.getElementById('calendar-grid');
 const monthYearLabel = document.getElementById('calendar-month-year');
 
-let habits = JSON.parse(localStorage.getItem('cal-habits')) || [];
-let selectedHabitIndex = habits.length > 0 ? 0 : null;
+let schedulerData = JSON.parse(localStorage.getItem('scheduler-data')) || {};
+let selectedDateString = "";
 
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
@@ -15,30 +15,42 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function saveData() {
-    localStorage.setItem('cal-habits', JSON.stringify(habits));
+    localStorage.setItem('scheduler-data', JSON.stringify(schedulerData));
 }
 
-function renderHabits() {
+function renderSidebar() {
     habitList.innerHTML = '';
-    if (habits.length === 0) {
-        habitList.innerHTML = '<li style="color:var(--text-muted); font-size:0.9rem; list-style:none;">No habits added yet.</li>';
-        selectedHabitIndex = null;
-        renderCalendar();
+    
+    if (!selectedDateString) {
+        habitList.innerHTML = '<li style="color:var(--text-muted); font-size:0.9rem; list-style:none;">Click a day on the calendar to manage its habits.</li>';
         return;
     }
 
-    habits.forEach((habit, index) => {
+    const displayDate = new Date(selectedDateString);
+    habitList.innerHTML = `<li style="list-style:none; font-weight:bold; margin-bottom:10px; color:var(--primary);">Selected Date: ${displayDate.toLocaleDateString()}</li>`;
+
+    const dayHabits = schedulerData[selectedDateString] || [];
+
+    if (dayHabits.length === 0) {
+        habitList.innerHTML += '<li style="color:var(--text-muted); font-size:0.9rem; list-style:none;">No habits for this day yet.</li>';
+        return;
+    }
+
+    dayHabits.forEach((habit, index) => {
         const li = document.createElement('li');
-        li.className = `habit-item ${index === selectedHabitIndex ? 'selected' : ''}`;
+        li.className = `habit-item ${habit.completed ? 'selected' : ''}`;
+        li.style.cursor = 'pointer';
+        
         li.innerHTML = `
-            <span class="habit-name">${habit.name}</span>
+            <span class="habit-name" style="${habit.completed ? 'text-decoration:line-through; opacity:0.6;' : ''}">${habit.name}</span>
             <button class="delete-btn" data-index="${index}">Delete</button>
         `;
-        
+
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete-btn')) return;
-            selectedHabitIndex = index;
-            renderHabits();
+            habit.completed = !habit.completed;
+            saveData();
+            renderSidebar();
             renderCalendar();
         });
 
@@ -49,27 +61,36 @@ function renderHabits() {
 function addHabit() {
     const name = habitInput.value.trim();
     if (!name) return;
+    if (!selectedDateString) {
+        alert("Please click a day on the calendar first!");
+        return;
+    }
 
-    habits.push({
+    if (!schedulerData[selectedDateString]) {
+        schedulerData[selectedDateString] = [];
+    }
+
+    schedulerData[selectedDateString].push({
         name: name,
-        history: []
+        completed: false
     });
 
     habitInput.value = '';
-    if (selectedHabitIndex === null) selectedHabitIndex = habits.length - 1;
     saveData();
-    renderHabits();
+    renderSidebar();
     renderCalendar();
 }
 
 function deleteHabit(index) {
-    habits.splice(index, 1);
-    if (selectedHabitIndex >= habits.length) {
-        selectedHabitIndex = habits.length > 0 ? habits.length - 1 : null;
+    if (schedulerData[selectedDateString]) {
+        schedulerData[selectedDateString].splice(index, 1);
+        if (schedulerData[selectedDateString].length === 0) {
+            delete schedulerData[selectedDateString];
+        }
+        saveData();
+        renderSidebar();
+        renderCalendar();
     }
-    saveData();
-    renderHabits();
-    renderCalendar();
 }
 
 function renderCalendar() {
@@ -92,45 +113,43 @@ function renderCalendar() {
         calendarGrid.appendChild(emptyDiv);
     }
 
-    const currentSelectedHabit = habits[selectedHabitIndex];
-
     for (let day = 1; day <= totalDays; day++) {
         const dayDiv = document.createElement('div');
         dayDiv.className = 'day';
-        dayDiv.innerText = day;
 
         const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
-        if (currentSelectedHabit && currentSelectedHabit.history.includes(dateString)) {
-            dayDiv.classList.add('completed');
+        
+        if (dateString === selectedDateString) {
+            dayDiv.style.borderColor = 'var(--primary)';
+            dayDiv.style.backgroundColor = 'rgba(99, 102, 241, 0.15)';
         }
 
+        const numDiv = document.createElement('div');
+        numDiv.className = 'day-number';
+        numDiv.innerText = day;
+        dayDiv.appendChild(numDiv);
+
+        const habitsContainer = document.createElement('div');
+        habitsContainer.className = 'day-habits';
+
+        const dayHabits = schedulerData[dateString] || [];
+        dayHabits.forEach((habit) => {
+            const badge = document.createElement('div');
+            badge.className = `calendar-habit-badge ${habit.completed ? 'completed' : ''}`;
+            badge.innerText = habit.name;
+            habitsContainer.appendChild(badge);
+        });
+
+        dayDiv.appendChild(habitsContainer);
+
         dayDiv.addEventListener('click', () => {
-            if (selectedHabitIndex === null) {
-                alert("Please add and select a habit first!");
-                return;
-            }
-            
-            const historyIndex = currentSelectedHabit.history.indexOf(dateString);
-            if (historyIndex > -1) {
-                currentSelectedHabit.history.splice(historyIndex, 1);
-            } else {
-                currentSelectedHabit.history.push(dateString);
-            }
-            
-            saveData();
+            selectedDateString = dateString;
             renderCalendar();
+            renderSidebar();
         });
 
         calendarGrid.appendChild(dayDiv);
     }
-
-    const hintDiv = document.createElement('div');
-    hintDiv.className = 'hint';
-    hintDiv.innerText = selectedHabitIndex !== null 
-        ? `Showing calendar for "${habits[selectedHabitIndex].name}". Click a day to toggle completion.`
-        : "Add a habit to open the calendar.";
-    calendarGrid.appendChild(hintDiv);
 }
 
 habitList.addEventListener('click', (e) => {
@@ -145,5 +164,5 @@ habitInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') addHabit();
 });
 
-renderHabits();
+renderSidebar();
 renderCalendar();

@@ -3,9 +3,9 @@
     --card-bg: #ffffff;
     --text-main: #1e293b;
     --text-muted: #64748b;
-    --primary: #706247;
-    --primary-hover: #533f19;
-    --success: #3d4442;
+    --primary: #644828;
+    --primary-hover: #4d3615;
+    --success: #86693d;
     --border: #e2e8f0;
 }
 
@@ -43,8 +43,9 @@ body {
 }
 
 .card {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 25px;
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
@@ -107,12 +108,6 @@ h2 {
     background: #f8fafc;
     border: 2px solid transparent;
     border-radius: 8px;
-    cursor: pointer;
-}
-
-.habit-item.selected {
-    border-color: var(--primary);
-    background: #e0e7ff;
 }
 
 .delete-btn {
@@ -161,25 +156,20 @@ h2 {
     padding: 6px;
     transition: all 0.15s ease;
     user-select: none;
-    border: 1px solid var(--border);
+    border: 2px solid transparent;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 1px var(--border);
 }
 
 .day:hover {
-    background: #e2e8f0;
+    background: rgba(226, 232, 240, 0.8);
 }
 
 .day.empty {
     background: transparent;
+    border: none;
+    box-shadow: none;
     cursor: default;
-}
-
-.day.completed {
-    background: var(--success);
-    color: white;
-}
-
-.day.completed:hover {
-    background: #059669;
 }
 
 .day-number {
@@ -191,34 +181,26 @@ h2 {
 }
 
 .day-habits {
-    display: flexx;
+    display: flex;
     flex-direction: column;
     gap: 4px;
+    pointer-events: none;
 }
 
-.calender-habit-badge {
+.calendar-habit-badge {
     font-size: 0.75rem;
     padding: 2px 6px;
-    background-color: var(--primary); 
+    background-color: var(--primary);
     color: white;
     border-radius: 4px;
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    cursor: pointer;
 }
 
-.calender-habit-badge.completed {
+.calendar-habit-badge.completed {
     background-color: var(--success);
     text-decoration: line-through;
     opacity: 0.8;
-}
-
-.hint {
-    grid-column: span 7;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 15px;
-    text-align: center;
 }
