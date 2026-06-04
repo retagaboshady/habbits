@@ -1,4 +1,4 @@
-# Habit Tracker##
+# Habit Tracker
 
 An website that help you organize your whole week,month even your whole year.(try it by clicking the demo)
 
@@ -26,7 +26,7 @@ An website that help you organize your whole week,month even your whole year.(tr
 
 * **JAVA SCRIPT:**
 
-## USES OF AI 
+## USES OF AI
 
 * **HTML:**
 
@@ -57,3 +57,5 @@ An website that help you organize your whole week,month even your whole year.(tr
 * **Finally you can add as much as habits, task in the same day:**
 
 ![Project Perview](/photos/Screenshot%20from%202026-06-04%2004-10-07.png)
+
+```bash git clone https://github.com/retagaboshady/habbits.get
